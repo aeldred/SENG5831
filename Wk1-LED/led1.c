@@ -84,7 +84,9 @@ int main()
 			}
 			break;
 	}
-	delay_ms(200);
+//	delay_ms(200);  --this forces program to stop processing for 200 ms, instead check time and if time to blink, do so, else off
+
+	
   }
 }
  
