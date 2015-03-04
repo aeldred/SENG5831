@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AVR Serial Port</key>
+	<string>usbmodem00077751</string>
+	<key>Dude Position</key>
+	<string>68 77 1364 763 0 0 1440 877 </string>
+	<key>Term Position</key>
+	<string>463 141 707 356 0 0 1440 877 </string>
+	<key>Terminal Baud Rate</key>
+	<integer>9600</integer>
+	<key>Terminal Bits</key>
+	<integer>8</integer>
+	<key>Terminal Parity</key>
+	<integer>0</integer>
+	<key>Terminal Send CRLF</key>
+	<true/>
+	<key>Terminal Serial Port</key>
+	<string>usbmodem00077753</string>
+	<key>Terminal Stop Bits</key>
+	<integer>1</integer>
+	<key>avrDevice</key>
+	<string>ATmega1284P</string>
+	<key>downloadFolder</key>
+	<string>~</string>
+	<key>eFuse</key>
+	<string></string>
+	<key>eepromPath</key>
+	<string></string>
+	<key>fuse</key>
+	<string></string>
+	<key>hFuse</key>
+	<string></string>
+	<key>hexPath</key>
+	<string>/Users/aeldred/GitHub/SENG5831/Lab1/lab1.hex</string>
+	<key>lFuse</key>
+	<string></string>
+	<key>lock</key>
+	<string></string>
+	<key>programmer</key>
+	<string>Atmel AVR ISP mkII</string>
+</dict>
+</plist>

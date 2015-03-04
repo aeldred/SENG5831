@@ -1,0 +1,13 @@
+#include <pololu/orangutan.h>
+
+ISR(TIMER0_COMPA_vect) {
+	tick_counter++;
+	if (tick_counter >= 400
+}
+
+int main() {
+	while(1) {
+		clear();
+	}
+}
+
