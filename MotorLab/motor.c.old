@@ -1,0 +1,24 @@
+#include <pololu/orangutan.h>
+
+/* Motor Lab
+Write a program to display the encoder counts as the motor turns. Use UI or buttons on the board to increase and decrease the speed. Also designate a way to "reverse" the motor. One direction increases encoder counts, the other direction decreases them. Example implementation: motor starts spinning "forward" and encoder counts increase on the display. Top button is pressed and the motor speed increases. Top button pressed again, and motor increases again (by arbitrary increment). Bottom button is pressed, motor speed decreases. Middle button pressed, motor reverses direction and encoder counts should start decreasing. Be careful reversing direction as I am not sure how the motor will react to an immediate switch from full speed forward to full speed backwards. Maybe when direction is reversed, set speed to low.
+*/
+
+/*
+Blue = encoder vcc (3.5 - 20V) = ADC0 (?)
+Yellow = encoder A output = PINA0
+White[Orange] = encoder B output = PINA1
+*/
+
+int encoder_cnts = 0;
+
+void init_motor() {
+	DDRA |= (1 << ADC0);
+}
+
+int main() {
+	while (1) {
+		init_motor();
+		PORTA |= (1 << ADC0);
+	}
+}
