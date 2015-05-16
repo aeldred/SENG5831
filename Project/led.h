@@ -14,7 +14,7 @@
 // lines to specify a different pin.
 #define LED_STRIP_PORT PORTD
 #define LED_STRIP_DDR  DDRD
-#define LED_STRIP_PIN  2
+#define LED_STRIP_PIN  PIND2
 
 #include <avr/io.h>
 #include <avr/interrupt.h>

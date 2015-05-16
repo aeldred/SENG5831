@@ -11,12 +11,13 @@ main.c
 #include <stdlib.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <pololu/orangutan.h>
 #include <util/delay.h>
 
 #include "led.h"
 #include "led_pattern.h"
 
-//#include <stdio.h>
+#include <stdio.h>
 
 #define LED_COUNT 18
 rgb_color colors[LED_COUNT];
@@ -57,6 +58,24 @@ void initHardware()
 	// disable global interrupts
 	cli();
 
+	// led setup is done in led.h
+	//DDRD &= ~(1<<LEDOutput);
+	// set LEDs low and data direction as output
+	//PORTD &= ~(1<<LEDOutput);	//LEDs low	
+	//DDRD |= (1<<LEDOutput);
+
+	// test the leds
+	//int i;
+	//for(i = 0; i < LED_COUNT; i++) {
+	//	colors[i] = (rgb_color){255,0,0};
+	//}
+
+	//led_strip_write(colors, LED_COUNT);
+	
+	// sensor setup
+	DDRD &= ~(1<<SensorInput);		//Sensor as input
+	PORTD |= (1<<SensorInput);		
+	
 	// timer0 (8bit) acts as a software interrupt that is triggered
 	// each time a new segment of the disc is started. When this 
 	// happens the led color needs to be changed to the next color
@@ -87,8 +106,7 @@ void initHardware()
 	// first disable INT1 in EIMSK by clearing its bit so that an 
 	// an interrupt can't be triggered on INT1 while register is changed
 	EIMSK &= 0xFD;
-	EICRA = 0x0C;
-	EIFR |= 0x02; 
+	EICRA |= 0x0C;
 	EIMSK |= 0x02;
 
 	// set the rotational period to 0
@@ -132,9 +150,9 @@ ISR(INT1_vect)
 	// if the period is too small, then the system is probably just starting
 	// up or it's a ghost signal, so don't do anything with the 
 	// LEDs until the next rotation is clocked
-	if (period < MIN_TICKS) {
-		return;
-	}
+	//if (period < MIN_TICKS) {
+	//	return;
+	//}
 
 	// set the timer0 compare match value so that the correct color is drawn
 	// at the exact moment the slot is at that segment
@@ -155,6 +173,8 @@ ISR(TIMER1_OVF_vect) {
 }
 
 int main() {
+	lcd_init_printf();
+	
 	// get the pattern that will be displayed 
 	// in future updates this should be modifiable via some sort of user input
 	rgb_color * pattern_colors = rainbow();		
@@ -164,6 +184,8 @@ int main() {
 	
 	while(1) {
 		if (sensor_detected) {
+			//lcd_goto_xy(0,1);
+			//printf("PER: %d",period);
 			//reset the interrupt flag
 			sensor_detected = 0;
 		}
@@ -191,6 +213,8 @@ int main() {
 			for(i = 0; i < LED_COUNT; i++) {
 				colors[i] = *(pattern_colors + curr_color);
 			}
+
+			led_strip_write(colors, LED_COUNT);
 
 			//increment to the next segment and wrap the value if > SEGMENTS 
 			segment_cnt = (segment_cnt + 1);
