@@ -158,8 +158,9 @@ int main() {
 	// get the pattern that will be displayed 
 	// in future updates this should be modifiable via some sort of user input
 	rgb_color * pattern_colors = rainbow();		
-	int num_colors = sizeof(pattern_colors);
+	int num_colors = sizeof(pattern_colors)/sizeof(pattern_colors[0]);
 	int seg_per_color = SEGMENTS / num_colors;
+	volatile int curr_color = 0;
 	
 	while(1) {
 		if (sensor_detected) {
@@ -171,16 +172,32 @@ int main() {
 			// the specific pattern is composed of an array of rgb_color structs,
 			// for this implementation, we will assume an even distribution of 
 			// colors across all segments
-			
+			// so need to determine which color should be displayed right now
+			// based on the value of segment_cnt
+			if ((segment_cnt % seg_per_color) == 0) {		
+				curr_color = curr_color + 1;
+
+				//might have uneven number of segments in relation to number
+				// of colors, so make sure we haven't gone past end of patter_color
+				// array. For now, just populate remaining segments with the final color
+				if (curr_color >= num_colors) {
+					curr_color = num_colors - 1;
+				}
+			}
 
 			// LEDs are individually addressable so need next color for each LED
+			// each position in the colors array represents 1 LED
 			int i;
 			for(i = 0; i < LED_COUNT; i++) {
-				colors[i] = *(pattern_colors + segment_cnt);
+				colors[i] = *(pattern_colors + curr_color);
 			}
 
 			//increment to the next segment and wrap the value if > SEGMENTS 
-			segment_cnt = ((segment_cnt + 1) % SEGMENTS);
+			segment_cnt = (segment_cnt + 1);
+			if (segment_cnt > SEGMENTS) {
+				segment_cnt = 0;
+				curr_color = 0;
+			}
 
 			// reset the interrupt flag
 			led_color_change = 0;
